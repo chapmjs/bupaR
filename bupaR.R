@@ -4,6 +4,9 @@
 # Link to Cheatsheet:
 # https://bupar.net/materials/20170904%20poster%20bupaR.pdf
 
+# additional, future resource:
+# https://medium.com/process-mining-and-analytics/process-mining-in-10-minutes-with-r-1ab28ed74e81
+
 # # Install Packages
 # install.packages("bupaR")
 # install.packages("edeaR")
@@ -30,6 +33,9 @@ patients %>% n_resources
 
 patients %>% cases
 
+
+## Import
+# https://bupar.net/creating_eventlogs.html
 
 # Read XES-files
 data <- read_xes("https://bupar.net/eventdata/exercise1.xes")
