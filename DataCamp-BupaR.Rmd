@@ -1,0 +1,125 @@
+---
+title: "DataCamp BupaR"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction to process analysis
+
+<https://campus.datacamp.com/courses/business-process-analytics-in-r>
+
+```{r}
+library(bupaR)
+library(eventdataR)
+
+eventdataR::patients
+
+# How many patients are there?
+n_cases(patients)
+
+# Print the summary of the data
+summary(patients)
+
+# Show the journey of the first patient
+slice(patients,1)
+
+# How many distinct activities are there?
+n_activities(patients)
+
+# What are the names of the activities?
+activity_labels(patients)
+
+# Create a list of activities
+activities(patients)
+
+# Have a look at the different traces
+traces(patients)
+
+# How many are there?
+n_traces(patients)
+
+# Load the processmapR package using library
+library(processmapR)
+
+# Visualize the traces using trace_explorer
+trace_explorer(patients,coverage=1)
+
+
+```
+## Create Process Maps
+```{r}
+# Load processmapR
+library(processmapR)
+
+# Draw process map
+process_map(patients)
+```
+
+
+## Construct event data objects
+```{r}
+# Read claims data
+# install.packages("readxl")
+library(readxl)
+
+claims <- read_excel("data/claims.xlsx")
+
+# Look at the structure of claims
+str(claims)
+
+# Create an eventlog of claims
+claims_log <- eventlog(
+  claims,
+  case_id = "id",
+  activity_id = "action_type",
+  activity_instance_id = "action",
+  timestamp = "date",
+  lifecycle_id = "status",
+  resource_id = "originator"
+
+)
+
+# Print summary
+print(summary(claims_log))
+
+# Check activity labels
+activity_labels(claims_log)
+```
+
+## Specialization of resources
+
+```{r}
+sepsis <- eventdataR::sepsis
+
+# Change the level to resource *and* activity
+frequencies_of_resources <- resource_frequency(sepsis, level = "resource-activity")
+
+# See the result
+frequencies_of_resources
+
+# See the result as a plot
+plot(frequencies_of_resources)
+
+```
+
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
