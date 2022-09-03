@@ -94,8 +94,15 @@ activity_labels(claims_log)
 ```{r}
 sepsis <- eventdataR::sepsis
 
+# Calculate frequency of resources
+frequencies_of_resources <- resource_frequency(sepsis, level = "resource")
+
+# Change the level to activity
+frequencies_of_resources <- resource_frequency(sepsis, level = "activity")
+
 # Change the level to resource *and* activity
 frequencies_of_resources <- resource_frequency(sepsis, level = "resource-activity")
+
 
 # See the result
 frequencies_of_resources
@@ -103,6 +110,77 @@ frequencies_of_resources
 # See the result as a plot
 plot(frequencies_of_resources)
 
+
+# Calculate resource involvement
+involvement_of_resources <- resource_involvement(sepsis,level="resource")
+
+# See the result
+involvement_of_resources
+
+# Show the result in a plot
+plot(involvement_of_resources)
+
+```
+
+## Process variants
+```{r}
+# Explore traces with 10% coverage
+trace_explorer(sepsis, coverage=.1)
+
+# Calculate the average trace length
+trace_length(sepsis)
+
+sepsis %>% 
+  # Check the activity presence
+  activity_presence() %>% 
+  # Plot the results
+  plot()
+```
+
+## Rework
+```{r}
+# Min, max and average number of repetitions
+number_of_repetitions(sepsis)
+
+# Number of repetitions per resource
+number_of_repetitions(sepsis, level = "resource")
+
+# Number of repetitions per activity
+n_reps_per_activity <- number_of_repetitions(sepsis, level = "activity")
+
+# See the result
+n_reps_per_activity
+
+# See the result in a plot
+plot(n_reps_per_activity)
+```
+
+## Precedence matrix
+```{r}
+sepsis %>% precedence_matrix(type = "absolute") %>% plot()
+sepsis %>% precedence_matrix(type = "relative") %>% plot()
+sepsis %>% precedence_matrix(type = "relative-antecedent") %>% plot()
+sepsis %>% precedence_matrix(type = "relative-consequent") %>% plot()
+```
+
+## Performance analysis
+```{r}
+# Need to add source of data
+
+
+# Draw a process map of median performance in hours
+eat_patterns %>% 
+  process_map(type = performance(FUN = median, units = "hours"))
+
+eat_patterns %>% 
+  # Calculate variation in processing times of activity durations
+  processing_time(level = "activity") %>% 
+  # Plot it
+  plot()
+
+# Draw a dotted chart of relative data sorted by start day
+eat_patterns %>% 
+  dotted_chart(x = "relative_day", sort = "start_day", units = "secs")
 ```
 
 
